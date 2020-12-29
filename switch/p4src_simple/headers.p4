@@ -44,6 +44,14 @@ header int_pid_t{
     bit<32> pid;
 }
 
+header cpu_t{
+    bit<32> pid;
+    bit<16> ipv4_srcPort;
+    bit<16> ipv4_dstPort;
+    bit<32> srcIP;
+    bit<32> dstIP;
+}
+
 struct metadata {
     bit<14> ecmp_hash;
     bit<14> ecmp_group_id;
@@ -60,6 +68,6 @@ struct headers {
     ipv4_t       ipv4;
 	udp_t        udp;
     int_pid_t    int_hdr;
-    ipv4_t       ip_dup;
+    cpu_t        CPU;
 }
 

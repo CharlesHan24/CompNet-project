@@ -126,25 +126,41 @@ control MyEgress(inout headers hdr,
 		clone3(CloneType.E2E, 100, meta);
 	}
 
-	action dbg_dup_ipv4(){
-		hdr.ip_dup.version = hdr.ipv4.version;
-		hdr.ip_dup.ihl = hdr.ipv4.ihl;
-		hdr.ip_dup.dscp = hdr.ipv4.dscp;
-		hdr.ip_dup.ecn = hdr.ipv4.ecn;
-		hdr.ip_dup.totalLen = hdr.ipv4.totalLen;
-		hdr.ip_dup.identification = hdr.ipv4.identification;
-		hdr.ip_dup.flags = hdr.ipv4.flags;
-		hdr.ip_dup.fragOffset = hdr.ipv4.fragOffset;
-		hdr.ip_dup.ttl = hdr.ipv4.ttl;
-		hdr.ip_dup.protocol = hdr.ipv4.protocol;
-		hdr.ip_dup.hdrChecksum = hdr.ipv4.hdrChecksum;
-		hdr.ip_dup.srcAddr = hdr.ipv4.srcAddr;
-		hdr.ip_dup.dstAddr = hdr.ipv4.dstAddr;
-	}
+	// action dbg_dup_ipv4(){
+	// 	hdr.ip_dup.version = hdr.ipv4.version;
+	// 	hdr.ip_dup.ihl = hdr.ipv4.ihl;
+	// 	hdr.ip_dup.dscp = hdr.ipv4.dscp;
+	// 	hdr.ip_dup.ecn = hdr.ipv4.ecn;
+	// 	hdr.ip_dup.totalLen = hdr.ipv4.totalLen;
+	// 	hdr.ip_dup.identification = hdr.ipv4.identification;
+	// 	hdr.ip_dup.flags = hdr.ipv4.flags;
+	// 	hdr.ip_dup.fragOffset = hdr.ipv4.fragOffset;
+	// 	hdr.ip_dup.ttl = hdr.ipv4.ttl;
+	// 	hdr.ip_dup.protocol = hdr.ipv4.protocol;
+	// 	hdr.ip_dup.hdrChecksum = hdr.ipv4.hdrChecksum;
+	// 	hdr.ip_dup.srcAddr = hdr.ipv4.srcAddr;
+	// 	hdr.ip_dup.dstAddr = hdr.ipv4.dstAddr;
+	// }
 
 	apply{
-		dbg_dup_ipv4();
-		//send_to_control_plane();
+		//dbg_dup_ipv4();
+		if ((hdr.ipv4.isValid()) && (hdr.ipv4.ttl > 1) && (standard_metadata.instance_type == 0)){
+			send_to_control_plane();
+		}
+		
+		if (standard_metadata.instance_type == 2){
+			hdr.CPU.setValid();
+			hdr.CPU.srcIP = meta.srcIP;
+			hdr.CPU.dstIP = meta.dstIP;
+			hdr.CPU.ipv4_srcPort = meta.ipv4_srcPort;
+			hdr.CPU.ipv4_dstPort = meta.ipv4_dstPort;
+			hdr.CPU.pid = meta.pid;
+
+			hdr.ethernet.setInvalid();
+			hdr.ipv4.setInvalid();
+			hdr.int_hdr.setInvalid();
+			hdr.udp.setInvalid();
+		}
 	}
 }
 
@@ -176,7 +192,7 @@ control MyComputeChecksum(inout headers hdr, inout metadata meta)
 		
 
 		update_checksum_with_payload(
-			hdr.int_hdr.isValid() && hdr.ip_dup.isValid(),
+			hdr.int_hdr.isValid(),
 			{hdr.ipv4.srcAddr,
 			 hdr.ipv4.dstAddr,
 			 8w0,
@@ -185,8 +201,7 @@ control MyComputeChecksum(inout headers hdr, inout metadata meta)
 			 hdr.udp.srcPort,
 			 hdr.udp.dstPort,
 			 hdr.udp.length,
-			 hdr.int_hdr,
-			 hdr.ip_dup},
+			 hdr.int_hdr},
 			 hdr.udp.checksum,
 			 HashAlgorithm.csum16);
 	}

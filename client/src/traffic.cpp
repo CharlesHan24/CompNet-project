@@ -83,10 +83,10 @@ int main(int argc, char* argv[]){
 
 	for (int i = 0; i < client_cnt; i++){
 		char log_file[200];
-		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/my_cli_serv/bin/log_sender_%d.txt", i);
+		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/bin/log_sender_%d.txt", i);
 		senders[i] = new defense_sender(host_ip_uint[client_cnt], host_ip_uint[i], host_port[i][1], host_port[i][0], mnet_host_pid[i], log_file);
 
-		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/my_cli_serv/bin/log_receiver_%d.txt", i);
+		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/bin/log_receiver_%d.txt", i);
 		receivers[i] = new defense_receiver(host_ip_uint[client_cnt], host_port[i][1], mnet_host_pid[client_cnt], log_file);
 	}
 

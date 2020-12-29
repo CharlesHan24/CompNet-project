@@ -45,11 +45,6 @@ parser MyParser(packet_in packet,
     state parse_int{
         packet.extract(hdr.int_hdr);
         meta.pid = hdr.int_hdr.pid;
-        transition parse_ipv4_dup;
-    }
-
-    state parse_ipv4_dup{
-        packet.extract(hdr.ip_dup);
         transition accept;
     }
 }
@@ -62,13 +57,11 @@ control MyDeparser(packet_out packet, in headers hdr) {
     apply {
         //parsed headers have to be added again into the packet.
         packet.emit(hdr.ethernet);
-        // packet.emit(hdr.CPU);
         packet.emit(hdr.ipv4);
         packet.emit(hdr.udp);
 
         packet.emit(hdr.int_hdr);
-        packet.emit(hdr.ip_dup);
-
+        packet.emit(hdr.CPU);
         
 
         // packet.emit(hdr.ethernet);

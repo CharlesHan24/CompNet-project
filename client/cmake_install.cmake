@@ -1,4 +1,4 @@
-# Install script for directory: /media/data/home/charleshan/CompNet-project/client/my_cli_serv
+# Install script for directory: /media/data/home/charleshan/CompNet-project/client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/media/data/home/charleshan/CompNet-project/client/my_cli_serv/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/media/data/home/charleshan/CompNet-project/client/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
