@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+**/log/**
+**/pcap/**
+**/CMakeFiles/**
+**/lib/**
+
+random_thoughts.md
