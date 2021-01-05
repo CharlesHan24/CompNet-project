@@ -57,3 +57,4 @@ dkms.conf
 **/lib/**
 
 random_thoughts.md
+./*backup/**
