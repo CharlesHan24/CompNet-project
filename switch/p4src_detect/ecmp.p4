@@ -121,7 +121,7 @@ control MyEgress(inout headers hdr,
 				 inout metadata meta,
 				 inout standard_metadata_t standard_metadata)
 {
-	Register<bit<32>>(RECORDLEN) record;
+	register<bit<32>>(32w1024) record;
 
 	action calc_record_index_hash() {
 		hash(meta.record_index_hash,
@@ -134,7 +134,7 @@ control MyEgress(inout headers hdr,
 				meta.ipv4_dstPort,
 				hdr.ipv4.protocol
 			},
-			RECORDLEN
+			(bit<32>)1024
 		);
 	}
 
