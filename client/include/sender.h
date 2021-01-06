@@ -21,7 +21,7 @@ struct defense_sender: public defense_host_t{
 
 	defense_sender(uint32_t _peer_ip, uint32_t _self_ip, uint16_t _peer_port, uint16_t _self_port, uint32_t _pid, char* log_file = NULL);
 
-	void send(int packet_cnt);
+	void send(int packet_cnt, int sleep_interval);
 
 	~defense_sender();
 };

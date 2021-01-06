@@ -1,0 +1,201 @@
+Sender: Successfully create the socket. sender: (10.1.1.2, 20000)receiver: (10.1.8.2, 20000)
+Sender: 1 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 2 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 3 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 4 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 5 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 6 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 7 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 8 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 9 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 10 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 11 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 12 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 13 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 14 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 15 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 16 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 17 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 18 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 19 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 20 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 21 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 22 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 23 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 24 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 25 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 26 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 27 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 28 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 29 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 30 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 31 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 32 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 33 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 34 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 35 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 36 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 37 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 38 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 39 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 40 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 41 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 42 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 43 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 44 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 45 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 46 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 47 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 48 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 49 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 50 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 51 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 52 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 53 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 54 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 55 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 56 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 57 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 58 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 59 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 60 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 61 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 62 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 63 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 64 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 65 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 66 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 67 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 68 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 69 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 70 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 71 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 72 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 73 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 74 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 75 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 76 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 77 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 78 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 79 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 80 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 81 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 82 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 83 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 84 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 85 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 86 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 87 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 88 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 89 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 90 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 91 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 92 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 93 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 94 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 95 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 96 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 97 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 98 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 99 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767
+Sender: 100 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=27767

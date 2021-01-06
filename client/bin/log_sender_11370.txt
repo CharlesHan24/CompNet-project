@@ -1,0 +1,50 @@
+Sender: Successfully create the socket. sender: (10.1.1.2, 20000)receiver: (10.1.8.2, 20000)
+Sender: 1 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 2 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 3 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 4 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 5 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 6 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 7 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 8 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 9 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 10 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 11 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 12 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 13 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 14 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 15 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 16 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 17 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 18 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 19 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 20 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 21 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 22 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 23 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: 24 / 100 packet; self_ip: 10.1.1.2, self_port: 20000
+pid=11370
+Sender: failed to send packets

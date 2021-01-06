@@ -93,6 +93,6 @@ struct headers {
 	udp_t        udp;
     tcp_t        tcp;   
     int_pid_t    int_hdr;
-    //cpu_t        CPU;
+    cpu_t        CPU;
 }
 

@@ -62,15 +62,15 @@ defense_sender::defense_sender(uint32_t _peer_ip, uint32_t _self_ip, uint16_t _p
         exit(1);
     }
 	
-	printf("Sender: Successfully create the socket. sender: (%s, %hu), receiver: (%s, %hu)\n", 
-		inet_ntoa((in_addr){.s_addr=self_ip}), self_port, inet_ntoa(addr_recv.sin_addr), peer_port);
+	printf("Sender: Successfully create the socket. sender: (%s, %hu)", inet_ntoa((in_addr){.s_addr=self_ip}), self_port);
+	printf("receiver: (%s, %hu)\n", inet_ntoa(addr_recv.sin_addr), peer_port);
 	if (log_stream != NULL){
-		fprintf(log_stream, "Sender: Successfully create the socket. sender: (%s, %hu), receiver: (%s, %hu)\n", 
-			inet_ntoa((in_addr){.s_addr=self_ip}), self_port, inet_ntoa(addr_recv.sin_addr), peer_port);
+		fprintf(log_stream, "Sender: Successfully create the socket. sender: (%s, %hu)", inet_ntoa((in_addr){.s_addr=self_ip}), self_port);
+		fprintf(log_stream, "receiver: (%s, %hu)\n", inet_ntoa(addr_recv.sin_addr), peer_port);
 	}
 }
 
-void defense_sender::send(int packet_cnt){
+void defense_sender::send(int packet_cnt, int sleep_interval){
 	app_packet_t packet;
 
 	printf("Packet_cnt: %d\n", packet_cnt);
@@ -104,7 +104,7 @@ void defense_sender::send(int packet_cnt){
 			fprintf(log_stream, "pid=%d\n", getpid());
 		}
 		// change to 0.1s
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		std::this_thread::sleep_for(std::chrono::milliseconds(sleep_interval));
 	}
 
 	printf("Sender: finished\n");

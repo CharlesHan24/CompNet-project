@@ -60,45 +60,50 @@ int config_loader(){
 	return tot_host;
 }
 
-defense_sender* senders[MAX_HOST_CNT];
-defense_receiver* receivers[MAX_HOST_CNT];
+defense_sender* sender;
+defense_receiver* receiver;
 
 int main(int argc, char* argv[]){
-	if (argc != 2){
-		printf("Usage: sudo ./traffic <client_cnt>\n");
+	if (argc != 5){
+		printf("Usage: sudo ./traffic WHO HOST_ID PORT_FROM, PORT_TO\n");
 		return 0;
 	}
 	
-	int client_cnt = atoi(argv[1]);
+	int identity = atoi(argv[1]);
+	int host_id = atoi(argv[2]);
+	uint16_t port_from = atoi(argv[3]);
+	uint16_t port_to = atoi(argv[4]);
 
 	int tot_host = config_loader();
-	if (tot_host < client_cnt + 1){
+	if (tot_host <= host_id){
 		printf("Error: hosts built by mininet not enough\n");
 		return 0;
 	}
 
-	for (int i = 0; i < tot_host; i++){
-		host_port[i][0] = host_port[i][1] = BASE_PORT_NUM + i;
-	}
+	char log_file[200];
+	if (identity == 0){     // client
+		if (host_id == tot_host - 1){
+			printf("Error: incorrect host id for client\n");
+			return 0;
+		}
+		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/bin/log_sender_%d.txt", getpid());
 
-	for (int i = 0; i < client_cnt; i++){
-		char log_file[200];
-		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/bin/log_sender_%d.txt", i);
-		senders[i] = new defense_sender(host_ip_uint[client_cnt], host_ip_uint[i], host_port[i][1], host_port[i][0], mnet_host_pid[i], log_file);
+		sender = new defense_sender(host_ip_uint[tot_host - 1], host_ip_uint[host_id], port_to, port_from, mnet_host_pid[host_id], log_file);
 
-		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/bin/log_receiver_%d.txt", i);
-		receivers[i] = new defense_receiver(host_ip_uint[client_cnt], host_port[i][1], mnet_host_pid[client_cnt], log_file);
-	}
-
-	for (int i = 0; i < client_cnt; i++){
-		thread cur_thread(&defense_receiver::receive, receivers[i], FLOW_SIZE);
+		thread cur_thread(&defense_sender::send, sender, FLOW_SIZE, 100);
 		cur_thread.detach();
 	}
-	sleep(1);
+	else{
+		if (host_id != tot_host - 1){
+			printf("Error: incorrect host id for server\n");
+			return 0;
+		}
+		sprintf(log_file, "/media/data/home/charleshan/CompNet-project/client/bin/log_receiver_%d.txt", getpid());
 
-	for (int i = 0; i < client_cnt; i++){
-		thread cur_thread(&defense_sender::send, senders[i], FLOW_SIZE);
-		cur_thread.detach();
+		receiver = new defense_receiver(host_ip_uint[host_id], port_from, mnet_host_pid[host_id], log_file);
+
+		thread cur_thread(&defense_receiver::receive, receiver);
+		cur_thread.detach();		
 	}
 
 	sleep(1000);

@@ -4,6 +4,10 @@
       "name" : "scalars_0",
       "id" : 0,
       "fields" : [
+        ["cond", 1, false],
+        ["cond_0", 1, false],
+        ["cond_1", 1, false],
+        ["cond_2", 1, false],
         ["userMetadata.ecmp_hash", 14, false],
         ["userMetadata.ecmp_group_id", 14, false],
         ["userMetadata.pid", 32, false],
@@ -11,7 +15,14 @@
         ["userMetadata.ipv4_dstPort", 16, false],
         ["userMetadata.srcIP", 32, false],
         ["userMetadata.dstIP", 32, false],
-        ["_padding_0", 4, false]
+        ["userMetadata.hash_id", 32, false],
+        ["userMetadata.hash_buc_key", 32, false],
+        ["userMetadata.hash_fingprint", 32, false],
+        ["userMetadata.hash_ts", 48, false],
+        ["userMetadata.existence", 1, false],
+        ["userMetadata.hash_pid", 32, false],
+        ["userMetadata.err_type", 32, false],
+        ["_padding_0", 7, false]
       ]
     },
     {
@@ -86,11 +97,10 @@
       "name" : "cpu_t",
       "id" : 6,
       "fields" : [
-        ["pid", 32, false],
-        ["ipv4_srcPort", 16, false],
-        ["ipv4_dstPort", 16, false],
-        ["srcIP", 32, false],
-        ["dstIP", 32, false]
+        ["old_pid", 32, false],
+        ["buc_id", 32, false],
+        ["hash_id", 32, false],
+        ["err_type", 32, false]
       ]
     }
   ],
@@ -155,7 +165,7 @@
       "name" : "fl",
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 126,
+        "line" : 202,
         "column" : 29,
         "source_fragment" : "meta"
       },
@@ -187,6 +197,102 @@
         {
           "type" : "field",
           "value" : ["scalars", "userMetadata.dstIP"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_id"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_buc_key"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_fingprint"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_ts"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.existence"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_pid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.err_type"]
+        }
+      ]
+    },
+    {
+      "id" : 2,
+      "name" : "fl_0",
+      "source_info" : {
+        "filename" : "./ecmp.p4",
+        "line" : 202,
+        "column" : 29,
+        "source_fragment" : "meta"
+      },
+      "elements" : [
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.ecmp_hash"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.ecmp_group_id"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.pid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.ipv4_srcPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.ipv4_dstPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.srcIP"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.dstIP"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_id"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_buc_key"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_fingprint"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_ts"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.existence"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.hash_pid"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "userMetadata.err_type"]
         }
       ]
     }
@@ -401,7 +507,56 @@
   ],
   "meter_arrays" : [],
   "counter_arrays" : [],
-  "register_arrays" : [],
+  "register_arrays" : [
+    {
+      "name" : "last_ts",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "./ecmp.p4",
+        "line" : 21,
+        "column" : 26,
+        "source_fragment" : "last_ts"
+      },
+      "size" : 20000,
+      "bitwidth" : 48
+    },
+    {
+      "name" : "fingprint",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "./ecmp.p4",
+        "line" : 22,
+        "column" : 26,
+        "source_fragment" : "fingprint"
+      },
+      "size" : 20000,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "existence",
+      "id" : 2,
+      "source_info" : {
+        "filename" : "./ecmp.p4",
+        "line" : 23,
+        "column" : 25,
+        "source_fragment" : "existence"
+      },
+      "size" : 20000,
+      "bitwidth" : 1
+    },
+    {
+      "name" : "proc_id",
+      "id" : 3,
+      "source_info" : {
+        "filename" : "./ecmp.p4",
+        "line" : 47,
+        "column" : 26,
+        "source_fragment" : "proc_id"
+      },
+      "size" : 20000,
+      "bitwidth" : 32
+    }
+  ],
   "calculations" : [
     {
       "name" : "calc",
@@ -433,9 +588,63 @@
     {
       "name" : "calc_0",
       "id" : 1,
+      "algo" : "crc32_custom",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4", "srcAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "dstAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["udp", "srcPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["udp", "dstPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "protocol"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_1",
+      "id" : 2,
+      "algo" : "crc32_custom",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4", "srcAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "dstAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["udp", "srcPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["udp", "dstPort"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4", "protocol"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_2",
+      "id" : 3,
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 175,
+        "line" : 259,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -492,11 +701,11 @@
       ]
     },
     {
-      "name" : "calc_1",
-      "id" : 2,
+      "name" : "calc_3",
+      "id" : 4,
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 194,
+        "line" : 278,
         "column" : 2,
         "source_fragment" : "update_checksum_with_payload( ..."
       },
@@ -569,7 +778,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 33,
+            "line" : 69,
             "column" : 2,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -591,7 +800,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 33,
+            "line" : 69,
             "column" : 2,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -613,7 +822,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 33,
+            "line" : 69,
             "column" : 2,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -656,7 +865,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 38,
+            "line" : 74,
             "column" : 2,
             "source_fragment" : "hash(meta.ecmp_hash, ..."
           }
@@ -675,7 +884,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 48,
+            "line" : 84,
             "column" : 2,
             "source_fragment" : "meta.ecmp_group_id = ecmp_group_id"
           }
@@ -710,7 +919,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 54,
+            "line" : 90,
             "column" : 2,
             "source_fragment" : "hdr.ethernet.srcAddr = hdr.ethernet.dstAddr"
           }
@@ -729,7 +938,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 56,
+            "line" : 92,
             "column" : 2,
             "source_fragment" : "hdr.ethernet.dstAddr = dstAddr"
           }
@@ -748,7 +957,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 58,
+            "line" : 94,
             "column" : 2,
             "source_fragment" : "standard_metadata.egress_spec = port"
           }
@@ -790,7 +999,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 60,
+            "line" : 96,
             "column" : 2,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -825,7 +1034,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 54,
+            "line" : 90,
             "column" : 2,
             "source_fragment" : "hdr.ethernet.srcAddr = hdr.ethernet.dstAddr"
           }
@@ -844,7 +1053,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 56,
+            "line" : 92,
             "column" : 2,
             "source_fragment" : "hdr.ethernet.dstAddr = dstAddr"
           }
@@ -863,7 +1072,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 58,
+            "line" : 94,
             "column" : 2,
             "source_fragment" : "standard_metadata.egress_spec = port"
           }
@@ -905,7 +1114,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 60,
+            "line" : 96,
             "column" : 2,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -913,8 +1122,1204 @@
       ]
     },
     {
-      "name" : "MyEgress.send_to_control_plane",
+      "name" : "MyIngress.update_and_filter",
       "id" : 7,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_id"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0001"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc_0"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0xffffffff"
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 130,
+            "column" : 2,
+            "source_fragment" : "hash(meta.hash_id, HashAlgorithm.crc32_custom, (bit<16>)1, {hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.udp.srcPort, hdr.udp.dstPort, hdr.ipv4.protocol}, (bit<32>)0xffff_ffff)"
+          }
+        },
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc_1"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00004e20"
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 131,
+            "column" : 2,
+            "source_fragment" : "hash(meta.hash_buc_key, HashAlgorithm.crc32_custom, (bit<16>)0, {hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.udp.srcPort, hdr.udp.dstPort, hdr.ipv4.protocol}, (bit<32>)20000)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.existence"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "existence"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 133,
+            "column" : 2,
+            "source_fragment" : "existence.read(meta.existence, meta.hash_buc_key)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_fingprint"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "fingprint"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 134,
+            "column" : 2,
+            "source_fragment" : "fingprint.read(meta.hash_fingprint, meta.hash_buc_key)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_ts"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "last_ts"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 135,
+            "column" : 2,
+            "source_fragment" : "last_ts.read(meta.hash_ts, meta.hash_buc_key)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_pid"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "proc_id"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 136,
+            "column" : 2,
+            "source_fragment" : "proc_id.read(meta.hash_pid, meta.hash_buc_key)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.err_type"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 137,
+            "column" : 2,
+            "source_fragment" : "meta.err_type = 0x0"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.existence"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_0"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : ">",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "-",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["standard_metadata", "ingress_global_timestamp"]
+                              },
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.hash_ts"]
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x000003938700"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_1"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.hash_fingprint"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.hash_id"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "cond_2"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "b2d",
+                  "left" : null,
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "!=",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.pid"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.hash_pid"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_fingprint"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.hash_id"]
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.hash_fingprint"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.existence"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.existence"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x01"
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.existence"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "==",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.existence"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_ts"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["standard_metadata", "ingress_global_timestamp"]
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.hash_ts"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_pid"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.pid"]
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.hash_pid"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_fingprint"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.hash_id"]
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.hash_id"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.hash_fingprint"]
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_0"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_pid"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.pid"]
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.pid"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.hash_pid"]
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_0"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_ts"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["standard_metadata", "ingress_global_timestamp"]
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_global_timestamp"]
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["standard_metadata", "ingress_global_timestamp"]
+                          },
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.hash_ts"]
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_1"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_0"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.err_type"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x00000000"
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000"
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "?",
+                              "left" : {
+                                "type" : "hexstr",
+                                "value" : "0x00000001"
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x00000000"
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_2"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x00000000"
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_1"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_0"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.err_type"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000000"
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "hexstr",
+                            "value" : "0x00000000"
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "?",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "?",
+                                  "left" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x00000001"
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x00000000"
+                                  },
+                                  "cond" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "cond_2"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x00000000"
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_1"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_0"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "hexstr",
+                            "value" : "0x00000000"
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "?",
+                              "left" : {
+                                "type" : "hexstr",
+                                "value" : "0x00000000"
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "?",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "?",
+                                      "left" : {
+                                        "type" : "hexstr",
+                                        "value" : "0x00000001"
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0x00000000"
+                                      },
+                                      "cond" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "d2b",
+                                          "left" : null,
+                                          "right" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "cond_2"]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x00000000"
+                                  },
+                                  "cond" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "cond_1"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond_0"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "?",
+                              "left" : {
+                                "type" : "hexstr",
+                                "value" : "0x00000000"
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "?",
+                                  "left" : {
+                                    "type" : "hexstr",
+                                    "value" : "0x00000000"
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "?",
+                                      "left" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "?",
+                                          "left" : {
+                                            "type" : "hexstr",
+                                            "value" : "0x00000001"
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0x00000000"
+                                          },
+                                          "cond" : {
+                                            "type" : "expression",
+                                            "value" : {
+                                              "op" : "d2b",
+                                              "left" : null,
+                                              "right" : {
+                                                "type" : "field",
+                                                "value" : ["scalars", "cond_2"]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0x00000000"
+                                      },
+                                      "cond" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "d2b",
+                                          "left" : null,
+                                          "right" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "cond_1"]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "cond" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "d2b",
+                                      "left" : null,
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "cond_0"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "d2b",
+                                  "left" : null,
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "cond"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x00000002"
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "d2b",
+                              "left" : null,
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "cond_1"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "d2b",
+                          "left" : null,
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "cond_0"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "d2b",
+                      "left" : null,
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "cond"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "existence"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.existence"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 162,
+            "column" : 2,
+            "source_fragment" : "existence.write(meta.hash_buc_key, meta.existence)"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "fingprint"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_fingprint"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 163,
+            "column" : 2,
+            "source_fragment" : "fingprint.write(meta.hash_buc_key, meta.hash_fingprint)"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "last_ts"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_ts"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 164,
+            "column" : 2,
+            "source_fragment" : "last_ts.write(meta.hash_buc_key, meta.hash_ts)"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "proc_id"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.hash_pid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 165,
+            "column" : 2,
+            "source_fragment" : "proc_id.write(meta.hash_buc_key, meta.hash_pid)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.send_to_control_plane",
+      "id" : 8,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -931,7 +2336,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 126,
+            "line" : 202,
             "column" : 2,
             "source_fragment" : "clone3(CloneType.E2E, 100, meta)"
           }
@@ -939,8 +2344,56 @@
       ]
     },
     {
-      "name" : "ecmp152",
-      "id" : 8,
+      "name" : "MyEgress.send_to_control_plane",
+      "id" : 9,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "clone_egress_pkt_to_egress",
+          "parameters" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x00000064"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x2"
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 202,
+            "column" : 2,
+            "source_fragment" : "clone3(CloneType.E2E, 100, meta)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.drop",
+      "id" : 10,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 206,
+            "column" : 2,
+            "source_fragment" : "mark_to_drop(standard_metadata)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "ecmp242",
+      "id" : 11,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -953,7 +2406,7 @@
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 152,
+            "line" : 242,
             "column" : 3,
             "source_fragment" : "hdr.CPU.setValid()"
           }
@@ -963,18 +2416,18 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["CPU", "srcIP"]
+              "value" : ["CPU", "old_pid"]
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.srcIP"]
+              "value" : ["scalars", "userMetadata.hash_pid"]
             }
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 153,
+            "line" : 243,
             "column" : 3,
-            "source_fragment" : "hdr.CPU.srcIP = meta.srcIP"
+            "source_fragment" : "hdr.CPU.old_pid = meta.hash_pid"
           }
         },
         {
@@ -982,18 +2435,18 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["CPU", "dstIP"]
+              "value" : ["CPU", "buc_id"]
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.dstIP"]
+              "value" : ["scalars", "userMetadata.hash_buc_key"]
             }
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 154,
+            "line" : 244,
             "column" : 3,
-            "source_fragment" : "hdr.CPU.dstIP = meta.dstIP"
+            "source_fragment" : "hdr.CPU.buc_id = meta.hash_buc_key"
           }
         },
         {
@@ -1001,18 +2454,18 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["CPU", "ipv4_srcPort"]
+              "value" : ["CPU", "hash_id"]
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.ipv4_srcPort"]
+              "value" : ["scalars", "userMetadata.hash_id"]
             }
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 155,
+            "line" : 245,
             "column" : 3,
-            "source_fragment" : "hdr.CPU.ipv4_srcPort = meta.ipv4_srcPort"
+            "source_fragment" : "hdr.CPU.hash_id = meta.hash_id"
           }
         },
         {
@@ -1020,97 +2473,18 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["CPU", "ipv4_dstPort"]
+              "value" : ["CPU", "err_type"]
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.ipv4_dstPort"]
+              "value" : ["scalars", "userMetadata.err_type"]
             }
           ],
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 156,
+            "line" : 246,
             "column" : 3,
-            "source_fragment" : "hdr.CPU.ipv4_dstPort = meta.ipv4_dstPort"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["CPU", "pid"]
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.pid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "./ecmp.p4",
-            "line" : 157,
-            "column" : 3,
-            "source_fragment" : "hdr.CPU.pid = meta.pid"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "ethernet"
-            }
-          ],
-          "source_info" : {
-            "filename" : "./ecmp.p4",
-            "line" : 159,
-            "column" : 3,
-            "source_fragment" : "hdr.ethernet.setInvalid()"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "ipv4"
-            }
-          ],
-          "source_info" : {
-            "filename" : "./ecmp.p4",
-            "line" : 160,
-            "column" : 3,
-            "source_fragment" : "hdr.ipv4.setInvalid()"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "int_hdr"
-            }
-          ],
-          "source_info" : {
-            "filename" : "./ecmp.p4",
-            "line" : 161,
-            "column" : 3,
-            "source_fragment" : "hdr.int_hdr.setInvalid()"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "udp"
-            }
-          ],
-          "source_info" : {
-            "filename" : "./ecmp.p4",
-            "line" : 162,
-            "column" : 3,
-            "source_fragment" : "hdr.udp.setInvalid()"
+            "source_fragment" : "hdr.CPU.err_type = meta.err_type"
           }
         }
       ]
@@ -1122,18 +2496,47 @@
       "id" : 0,
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 26,
+        "line" : 62,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "MyIngress.ipv4_lpm",
+          "name" : "tbl_update_and_filter",
           "id" : 0,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 76,
+            "line" : 177,
+            "column" : 3,
+            "source_fragment" : "update_and_filter()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [7],
+          "actions" : ["MyIngress.update_and_filter"],
+          "base_default_next" : "MyIngress.ipv4_lpm",
+          "next_tables" : {
+            "MyIngress.update_and_filter" : "MyIngress.ipv4_lpm"
+          },
+          "default_entry" : {
+            "action_id" : 7,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "MyIngress.ipv4_lpm",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 112,
             "column" : 7,
             "source_fragment" : "ipv4_lpm"
           },
@@ -1168,10 +2571,10 @@
         },
         {
           "name" : "MyIngress.ecmp_group_to_nhop",
-          "id" : 1,
+          "id" : 2,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 63,
+            "line" : 99,
             "column" : 7,
             "source_fragment" : "ecmp_group_to_nhop"
           },
@@ -1212,10 +2615,10 @@
         },
         {
           "name" : "tbl_drop",
-          "id" : 2,
+          "id" : 3,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 110,
+            "line" : 186,
             "column" : 3,
             "source_fragment" : "drop()"
           },
@@ -1247,7 +2650,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 101,
+            "line" : 176,
             "column" : 6,
             "source_fragment" : "hdr.ipv4.isValid() && hdr.ipv4.ttl > 1"
           },
@@ -1282,7 +2685,7 @@
               }
             }
           },
-          "true_next" : "MyIngress.ipv4_lpm",
+          "true_next" : "tbl_update_and_filter",
           "false_next" : "tbl_drop"
         }
       ]
@@ -1292,19 +2695,19 @@
       "id" : 1,
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 120,
+        "line" : 196,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
-      "init_table" : "node_8",
+      "init_table" : "node_9",
       "tables" : [
         {
           "name" : "tbl_send_to_control_plane",
-          "id" : 3,
+          "id" : 4,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 148,
-            "column" : 3,
+            "line" : 233,
+            "column" : 5,
             "source_fragment" : "send_to_control_plane()"
           },
           "key" : [],
@@ -1314,25 +2717,83 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [7],
+          "action_ids" : [8],
           "actions" : ["MyEgress.send_to_control_plane"],
-          "base_default_next" : "node_10",
+          "base_default_next" : "tbl_drop_0",
           "next_tables" : {
-            "MyEgress.send_to_control_plane" : "node_10"
+            "MyEgress.send_to_control_plane" : "tbl_drop_0"
           },
           "default_entry" : {
-            "action_id" : 7,
+            "action_id" : 8,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
           }
         },
         {
-          "name" : "tbl_ecmp152",
-          "id" : 4,
+          "name" : "tbl_drop_0",
+          "id" : 5,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 152,
+            "line" : 234,
+            "column" : 5,
+            "source_fragment" : "drop()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [10],
+          "actions" : ["MyEgress.drop"],
+          "base_default_next" : "node_15",
+          "next_tables" : {
+            "MyEgress.drop" : "node_15"
+          },
+          "default_entry" : {
+            "action_id" : 10,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_send_to_control_plane_0",
+          "id" : 6,
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 237,
+            "column" : 4,
+            "source_fragment" : "send_to_control_plane()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [9],
+          "actions" : ["MyEgress.send_to_control_plane"],
+          "base_default_next" : "node_15",
+          "next_tables" : {
+            "MyEgress.send_to_control_plane" : "node_15"
+          },
+          "default_entry" : {
+            "action_id" : 9,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_ecmp242",
+          "id" : 7,
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 242,
             "column" : 3,
             "source_fragment" : "hdr.CPU.setValid(); ..."
           },
@@ -1343,14 +2804,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [8],
-          "actions" : ["ecmp152"],
+          "action_ids" : [11],
+          "actions" : ["ecmp242"],
           "base_default_next" : null,
           "next_tables" : {
-            "ecmp152" : null
+            "ecmp242" : null
           },
           "default_entry" : {
-            "action_id" : 8,
+            "action_id" : 11,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -1360,11 +2821,11 @@
       "action_profiles" : [],
       "conditionals" : [
         {
-          "name" : "node_8",
+          "name" : "node_9",
           "id" : 1,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 147,
+            "line" : 231,
             "column" : 6,
             "source_fragment" : "(hdr.ipv4.isValid()) && (hdr.ipv4.ttl > 1) && (standard_metadata.instance_type == 0)"
           },
@@ -1419,15 +2880,67 @@
               }
             }
           },
-          "true_next" : "tbl_send_to_control_plane",
-          "false_next" : "node_10"
+          "true_next" : "node_10",
+          "false_next" : "node_15"
         },
         {
           "name" : "node_10",
           "id" : 2,
           "source_info" : {
             "filename" : "./ecmp.p4",
-            "line" : 151,
+            "line" : 232,
+            "column" : 8,
+            "source_fragment" : "meta.err_type == 0x1"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["scalars", "userMetadata.err_type"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x00000001"
+              }
+            }
+          },
+          "true_next" : "tbl_send_to_control_plane",
+          "false_next" : "node_13"
+        },
+        {
+          "name" : "node_13",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 236,
+            "column" : 12,
+            "source_fragment" : "meta.err_type == 0x2"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["scalars", "userMetadata.err_type"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x00000002"
+              }
+            }
+          },
+          "true_next" : "tbl_send_to_control_plane_0",
+          "false_next" : "node_15"
+        },
+        {
+          "name" : "node_15",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "./ecmp.p4",
+            "line" : 241,
             "column" : 6,
             "source_fragment" : "standard_metadata.instance_type == 2"
           },
@@ -1446,7 +2959,7 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_ecmp152"
+          "true_next" : "tbl_ecmp242"
         }
       ]
     }
@@ -1457,13 +2970,13 @@
       "id" : 0,
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 175,
+        "line" : 259,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
       "target" : ["ipv4", "hdrChecksum"],
       "type" : "generic",
-      "calculation" : "calc_0",
+      "calculation" : "calc_2",
       "verify" : false,
       "update" : true,
       "if_cond" : {
@@ -1483,13 +2996,13 @@
       "id" : 1,
       "source_info" : {
         "filename" : "./ecmp.p4",
-        "line" : 194,
+        "line" : 278,
         "column" : 2,
         "source_fragment" : "update_checksum_with_payload( ..."
       },
       "target" : ["udp", "checksum"],
       "type" : "generic",
-      "calculation" : "calc_1",
+      "calculation" : "calc_3",
       "verify" : false,
       "update" : true,
       "if_cond" : {

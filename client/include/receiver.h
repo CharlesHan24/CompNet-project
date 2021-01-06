@@ -19,7 +19,7 @@ struct defense_receiver: public defense_host_t{
     defense_receiver ();
     defense_receiver(uint32_t _self_ip, uint16_t _self_port, uint32_t _pid, char* log_file = NULL);
 
-    void receive(int packet_cnt);
+    void receive();
 
     ~defense_receiver();
 };

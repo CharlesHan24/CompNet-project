@@ -45,11 +45,10 @@ header int_pid_t{
 }
 
 header cpu_t{
-    bit<32> pid;
-    bit<16> ipv4_srcPort;
-    bit<16> ipv4_dstPort;
-    bit<32> srcIP;
-    bit<32> dstIP;
+    bit<32> old_pid;
+    bit<32> buc_id;
+    bit<32> hash_id;
+    bit<32> err_type;
 }
 
 struct metadata {
@@ -61,6 +60,15 @@ struct metadata {
     bit<16> ipv4_dstPort;
     bit<32> srcIP;
     bit<32> dstIP;
+
+    bit<32> hash_id;
+    bit<32> hash_buc_key;
+    bit<32> hash_fingprint;
+    bit<48> hash_ts;
+    bit<1> existence;
+    bit<32> hash_pid;
+
+    bit<32> err_type;
 }
 
 struct headers {

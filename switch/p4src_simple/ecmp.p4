@@ -7,7 +7,43 @@
 #include "./headers.p4"
 #include "./parsers.p4"
 
+#define BUCKET_NUM 20000
+#define TIMESTAMP_WIDTH 48
+#define FINGPRINT_WIDTH 32
+#define PROCID_WIDTH 32
 
+#define PROC_ID_CONFLICT 0x1
+#define HASH_COLLISION 0x2
+#define NO_ERROR 0x0
+#define DELTA_T (bit<48>)60000000    
+// timeout value. 6 * 10^7 us = 60s. standard_metadata.ingress_global_timestamp is in microseconds. 
+
+register<bit<TIMESTAMP_WIDTH> >(BUCKET_NUM) last_ts;
+register<bit<FINGPRINT_WIDTH> >(BUCKET_NUM) fingprint;
+register<bit<1> >(BUCKET_NUM) existence;
+register<bit<PROCID_WIDTH> >(BUCKET_NUM) proc_id;
+
+#define COMPUTE_ID_HASH hash(meta.hash_id,\
+			 HashAlgorithm.crc32_custom,\
+			 (bit<16>)1,\
+			 {hdr.ipv4.srcAddr,\
+			  hdr.ipv4.dstAddr,\
+			  hdr.udp.srcPort,\
+			  hdr.udp.dstPort,\
+			  hdr.ipv4.protocol},\
+			 (bit<32>)0xffff_ffff);
+
+
+
+#define COMPUTE_ARRAY_HASH hash(meta.hash_buc_key,\
+			 HashAlgorithm.crc32_custom,\
+			 (bit<16>)0,\
+			 {hdr.ipv4.srcAddr,\
+			  hdr.ipv4.dstAddr,\
+			  hdr.udp.srcPort,\
+			  hdr.udp.dstPort,\
+			  hdr.ipv4.protocol},\
+			 (bit<32>)BUCKET_NUM);
 
 
 /*************************************************************************
@@ -90,6 +126,45 @@ control MyIngress(inout headers hdr,
 	/******************* inherited code ends here       ************************/
 
 
+	action update_and_filter(){
+		COMPUTE_ID_HASH
+		COMPUTE_ARRAY_HASH
+
+		existence.read(meta.existence, meta.hash_buc_key);
+		fingprint.read(meta.hash_fingprint, meta.hash_buc_key);
+		last_ts.read(meta.hash_ts, meta.hash_buc_key);
+		proc_id.read(meta.hash_pid, meta.hash_buc_key);
+		meta.err_type = NO_ERROR;
+		
+		if (meta.existence == 0){
+			meta.hash_fingprint = meta.hash_id;
+			meta.existence = 1;
+			meta.hash_ts = standard_metadata.ingress_global_timestamp;
+			meta.hash_pid = meta.pid;
+		}
+		else if (standard_metadata.ingress_global_timestamp - meta.hash_ts > DELTA_T){
+			meta.hash_fingprint = meta.hash_id;
+			meta.hash_pid = meta.pid;
+			meta.hash_ts = standard_metadata.ingress_global_timestamp;
+		}
+		else{
+			if (meta.hash_fingprint == meta.hash_id){
+				meta.hash_ts = standard_metadata.ingress_global_timestamp;
+				if (meta.pid != meta.hash_pid){
+					meta.err_type = PROC_ID_CONFLICT;
+				}
+				// else do nothing
+			}
+			else{
+				meta.err_type = HASH_COLLISION;
+			}
+		}
+		existence.write(meta.hash_buc_key, meta.existence);
+		fingprint.write(meta.hash_buc_key, meta.hash_fingprint);
+		last_ts.write(meta.hash_buc_key, meta.hash_ts);
+		proc_id.write(meta.hash_buc_key, meta.hash_pid);
+	}
+
 
 	/******** log code starts here*******/
 
@@ -99,6 +174,7 @@ control MyIngress(inout headers hdr,
 	apply
 	{   
 		if (hdr.ipv4.isValid() && hdr.ipv4.ttl > 1) {
+			update_and_filter();
 			
 			switch (ipv4_lpm.apply().action_run){
 				ecmp_group:{
@@ -126,6 +202,10 @@ control MyEgress(inout headers hdr,
 		clone3(CloneType.E2E, 100, meta);
 	}
 
+	action drop(){
+		mark_to_drop(standard_metadata);
+	}
+
 	// action dbg_dup_ipv4(){
 	// 	hdr.ip_dup.version = hdr.ipv4.version;
 	// 	hdr.ip_dup.ihl = hdr.ipv4.ihl;
@@ -144,22 +224,26 @@ control MyEgress(inout headers hdr,
 
 	apply{
 		//dbg_dup_ipv4();
+		// if ((hdr.ipv4.isValid()) && (hdr.ipv4.ttl > 1) && (standard_metadata.instance_type == 0)){
+		// 	send_to_control_plane();
+		// }
+
 		if ((hdr.ipv4.isValid()) && (hdr.ipv4.ttl > 1) && (standard_metadata.instance_type == 0)){
-			send_to_control_plane();
+		 	if (meta.err_type == PROC_ID_CONFLICT){
+				 send_to_control_plane();
+				 drop();
+			}
+			else if (meta.err_type == HASH_COLLISION){
+				send_to_control_plane();
+			}
 		}
 		
-		if (standard_metadata.instance_type == 2){
+		if (standard_metadata.instance_type == 2){    // E2E
 			hdr.CPU.setValid();
-			hdr.CPU.srcIP = meta.srcIP;
-			hdr.CPU.dstIP = meta.dstIP;
-			hdr.CPU.ipv4_srcPort = meta.ipv4_srcPort;
-			hdr.CPU.ipv4_dstPort = meta.ipv4_dstPort;
-			hdr.CPU.pid = meta.pid;
-
-			hdr.ethernet.setInvalid();
-			hdr.ipv4.setInvalid();
-			hdr.int_hdr.setInvalid();
-			hdr.udp.setInvalid();
+			hdr.CPU.old_pid = meta.hash_pid;
+			hdr.CPU.buc_id = meta.hash_buc_key;
+			hdr.CPU.hash_id = meta.hash_id;
+			hdr.CPU.err_type = meta.err_type;
 		}
 	}
 }
@@ -194,16 +278,16 @@ control MyComputeChecksum(inout headers hdr, inout metadata meta)
 		update_checksum_with_payload(
 			hdr.int_hdr.isValid(),
 			{hdr.ipv4.srcAddr,
-			 hdr.ipv4.dstAddr,
-			 8w0,
-			 hdr.ipv4.protocol,
-			 hdr.udp.length,
-			 hdr.udp.srcPort,
-			 hdr.udp.dstPort,
-			 hdr.udp.length,
-			 hdr.int_hdr},
-			 hdr.udp.checksum,
-			 HashAlgorithm.csum16);
+			hdr.ipv4.dstAddr,
+			8w0,
+			hdr.ipv4.protocol,
+			hdr.udp.length,
+			hdr.udp.srcPort,
+			hdr.udp.dstPort,
+			hdr.udp.length,
+			hdr.int_hdr},
+			hdr.udp.checksum,
+			HashAlgorithm.csum16);
 	}
 }
 

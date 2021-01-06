@@ -1,0 +1,26 @@
+Sender: Successfully create the socket. sender: (10.1.1.2, 20021)receiver: (10.1.8.2, 20000)
+Sender: 1 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 2 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 3 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 4 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 5 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 6 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 7 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 8 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 9 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 10 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 11 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: 12 / 100 packet; self_ip: 10.1.1.2, self_port: 20021
+pid=9988
+Sender: failed to send packets

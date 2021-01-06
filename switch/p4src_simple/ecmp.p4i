@@ -917,11 +917,10 @@ header int_pid_t{
 }
 
 header cpu_t{
-    bit<32> pid;
-    bit<16> ipv4_srcPort;
-    bit<16> ipv4_dstPort;
-    bit<32> srcIP;
-    bit<32> dstIP;
+    bit<32> old_pid;
+    bit<32> buc_id;
+    bit<32> hash_id;
+    bit<32> err_type;
 }
 
 struct metadata {
@@ -933,6 +932,15 @@ struct metadata {
     bit<16> ipv4_dstPort;
     bit<32> srcIP;
     bit<32> dstIP;
+
+    bit<32> hash_id;
+    bit<32> hash_buc_key;
+    bit<32> hash_fingprint;
+    bit<48> hash_ts;
+    bit<1> existence;
+    bit<32> hash_pid;
+
+    bit<32> err_type;
 }
 
 struct headers {
@@ -1016,10 +1024,14 @@ control MyDeparser(packet_out packet, in headers hdr) {
     }
 }
 # 9 "./ecmp.p4" 2
+# 19 "./ecmp.p4"
+// timeout value. 6 * 10^7 us = 60s. standard_metadata.ingress_global_timestamp is in microseconds. 
 
-
-
-
+register<bit<48> >(20000) last_ts;
+register<bit<32> >(20000) fingprint;
+register<bit<1> >(20000) existence;
+register<bit<32> >(20000) proc_id;
+# 49 "./ecmp.p4"
 /*************************************************************************
 ************   C H E C K S U M    V E R I F I C A T I O N   *************
 *************************************************************************/
@@ -1100,6 +1112,45 @@ control MyIngress(inout headers hdr,
  /******************* inherited code ends here       ************************/
 
 
+ action update_and_filter(){
+  hash(meta.hash_id, HashAlgorithm.crc32_custom, (bit<16>)1, {hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.udp.srcPort, hdr.udp.dstPort, hdr.ipv4.protocol}, (bit<32>)0xffff_ffff);
+  hash(meta.hash_buc_key, HashAlgorithm.crc32_custom, (bit<16>)0, {hdr.ipv4.srcAddr, hdr.ipv4.dstAddr, hdr.udp.srcPort, hdr.udp.dstPort, hdr.ipv4.protocol}, (bit<32>)20000);
+
+  existence.read(meta.existence, meta.hash_buc_key);
+  fingprint.read(meta.hash_fingprint, meta.hash_buc_key);
+  last_ts.read(meta.hash_ts, meta.hash_buc_key);
+  proc_id.read(meta.hash_pid, meta.hash_buc_key);
+  meta.err_type = 0x0;
+
+  if (meta.existence == 0){
+   meta.hash_fingprint = meta.hash_id;
+   meta.existence = 1;
+   meta.hash_ts = standard_metadata.ingress_global_timestamp;
+   meta.hash_pid = meta.pid;
+  }
+  else if (standard_metadata.ingress_global_timestamp - meta.hash_ts > (bit<48>)60000000){
+   meta.hash_fingprint = meta.hash_id;
+   meta.hash_pid = meta.pid;
+   meta.hash_ts = standard_metadata.ingress_global_timestamp;
+  }
+  else{
+   if (meta.hash_fingprint == meta.hash_id){
+    meta.hash_ts = standard_metadata.ingress_global_timestamp;
+    if (meta.pid != meta.hash_pid){
+     meta.err_type = 0x1;
+    }
+    // else do nothing
+   }
+   else{
+    meta.err_type = 0x2;
+   }
+  }
+  existence.write(meta.hash_buc_key, meta.existence);
+  fingprint.write(meta.hash_buc_key, meta.hash_fingprint);
+  last_ts.write(meta.hash_buc_key, meta.hash_ts);
+  proc_id.write(meta.hash_buc_key, meta.hash_pid);
+ }
+
 
  /******** log code starts here*******/
 
@@ -1109,6 +1160,7 @@ control MyIngress(inout headers hdr,
  apply
  {
   if (hdr.ipv4.isValid() && hdr.ipv4.ttl > 1) {
+   update_and_filter();
 
    switch (ipv4_lpm.apply().action_run){
     ecmp_group:{
@@ -1136,6 +1188,10 @@ control MyEgress(inout headers hdr,
   clone3(CloneType.E2E, 100, meta);
  }
 
+ action drop(){
+  mark_to_drop(standard_metadata);
+ }
+
  // action dbg_dup_ipv4(){
  // 	hdr.ip_dup.version = hdr.ipv4.version;
  // 	hdr.ip_dup.ihl = hdr.ipv4.ihl;
@@ -1154,22 +1210,26 @@ control MyEgress(inout headers hdr,
 
  apply{
   //dbg_dup_ipv4();
+  // if ((hdr.ipv4.isValid()) && (hdr.ipv4.ttl > 1) && (standard_metadata.instance_type == 0)){
+  // 	send_to_control_plane();
+  // }
+
   if ((hdr.ipv4.isValid()) && (hdr.ipv4.ttl > 1) && (standard_metadata.instance_type == 0)){
-   send_to_control_plane();
+    if (meta.err_type == 0x1){
+     send_to_control_plane();
+     drop();
+   }
+   else if (meta.err_type == 0x2){
+    send_to_control_plane();
+   }
   }
 
-  if (standard_metadata.instance_type == 2){
+  if (standard_metadata.instance_type == 2){ // E2E
    hdr.CPU.setValid();
-   hdr.CPU.srcIP = meta.srcIP;
-   hdr.CPU.dstIP = meta.dstIP;
-   hdr.CPU.ipv4_srcPort = meta.ipv4_srcPort;
-   hdr.CPU.ipv4_dstPort = meta.ipv4_dstPort;
-   hdr.CPU.pid = meta.pid;
-
-   hdr.ethernet.setInvalid();
-   hdr.ipv4.setInvalid();
-   hdr.int_hdr.setInvalid();
-   hdr.udp.setInvalid();
+   hdr.CPU.old_pid = meta.hash_pid;
+   hdr.CPU.buc_id = meta.hash_buc_key;
+   hdr.CPU.hash_id = meta.hash_id;
+   hdr.CPU.err_type = meta.err_type;
   }
  }
 }
@@ -1204,16 +1264,16 @@ control MyComputeChecksum(inout headers hdr, inout metadata meta)
   update_checksum_with_payload(
    hdr.int_hdr.isValid(),
    {hdr.ipv4.srcAddr,
-    hdr.ipv4.dstAddr,
-    8w0,
-    hdr.ipv4.protocol,
-    hdr.udp.length,
-    hdr.udp.srcPort,
-    hdr.udp.dstPort,
-    hdr.udp.length,
-    hdr.int_hdr},
-    hdr.udp.checksum,
-    HashAlgorithm.csum16);
+   hdr.ipv4.dstAddr,
+   8w0,
+   hdr.ipv4.protocol,
+   hdr.udp.length,
+   hdr.udp.srcPort,
+   hdr.udp.dstPort,
+   hdr.udp.length,
+   hdr.int_hdr},
+   hdr.udp.checksum,
+   HashAlgorithm.csum16);
  }
 }
 

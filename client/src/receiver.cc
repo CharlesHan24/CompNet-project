@@ -60,13 +60,12 @@ defense_receiver::defense_receiver(uint32_t _self_ip, uint16_t _self_port, uint3
     }
 }
 
-void defense_receiver::receive(int packet_cnt){
+void defense_receiver::receive(){
     app_packet_t packet;
     int addr_len = 16;
 
-    printf("Packet_cnt: %d\n", packet_cnt);
 
-    for (int recvp = 0; recvp < packet_cnt; recvp++){
+    for (int recvp = 0; ; recvp++){
         int recv_num = recvfrom(sock_fd, (void*)&packet, sizeof(app_packet_t), 0, (sockaddr*)&addr_send, (socklen_t*)&addr_len);
 
         ipv4_hdr_t* ip_dup = (ipv4_hdr_t*)(&packet.buf);
@@ -87,15 +86,14 @@ void defense_receiver::receive(int packet_cnt){
             exit(1);
         }*/
 
-        if (!recvp){
-            peer_port = ntohs(addr_send.sin_port);
-            peer_ip = addr_send.sin_addr.s_addr;
-        }
+        peer_port = ntohs(addr_send.sin_port);
+        peer_ip = addr_send.sin_addr.s_addr;
+        
 
-        printf("Receiver:  %d / %d packet; peer_ip: %s, peer_port: %hu\n", recvp + 1, packet_cnt, inet_ntoa((in_addr){.s_addr=peer_ip}), peer_port);
+        printf("Receiver:  %d packet; peer_ip: %s, peer_port: %hu\n", recvp + 1, inet_ntoa((in_addr){.s_addr=peer_ip}), peer_port);
 
         if (log_stream != NULL){
-            fprintf(log_stream, "Receiver:  %d / %d packet; peer_ip: %s, peer_port: %hu, ", recvp + 1, packet_cnt, inet_ntoa((in_addr){.s_addr=peer_ip}), peer_port);
+            fprintf(log_stream, "Receiver:  %d packet; peer_ip: %s, peer_port: %hu, ", recvp + 1,  inet_ntoa((in_addr){.s_addr=peer_ip}), peer_port);
             fprintf(log_stream, "self_ip: %s, self_port:%hu\n", inet_ntoa(addr_recv.sin_addr), self_port);
 
             fprintf(log_stream, "pid = %d, packet_id = %d\n", ntohl(packet.int_header.pid), ntohl(packet.buf.packet_id));

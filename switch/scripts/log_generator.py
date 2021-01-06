@@ -7,6 +7,7 @@ from scapy.all import *
 import sys
 import threading
 import argparse
+import pdb
 
 
 class Ctrl_msg(Packet):
@@ -63,6 +64,7 @@ class packetReceicer(threading.Thread):
         #print
         #print("["+self.sw_name+"] received packet number:"+str(self.counter))
         self.counter += 1
+        pdb.set_trace()
         cpu = Ctrl_msg(str(pkt))
 
         self.gen_per_packet_log(cpu)
